@@ -48,15 +48,11 @@ r = requests.get("https://ro.wikipedia.org/wiki/Rezultatele_echipei_na%C8%9Biona
 content = r.content
 soup = BeautifulSoup(content, "html.parser")
 
-tables = soup.find_all('table')
-cnt = 0
-for my_table in tables:
-    cnt += 1
-    print ('=============== TABLE {} ==============='.format(cnt))
-    rows = my_table.find_all('tr', recursive=True)                  # <-- HERE
-    
-    for row in rows:
-        cells = row.find_all('td', recursive=True)          # <-- HERE
+
+
+for my_table in soup.find_all('table'):            
+    for row in my_table.find_all('tr'):
+        cells = row.find_all('td')      
         if len(cells)==5:
             cell = cells[0]
             data = [cc for cc in cell.children]
@@ -72,7 +68,12 @@ for my_table in tables:
             month = months[datetime_data[1]]
             year = int(datetime_data[2])
             dic['date'].append(datetime.date(year,month,day))
-            dic['game_type'].append(data[2].contents[0].encode('utf-8'))
+            game_type = data[2].contents[0]
+            
+            if type(game_type)== bs4.element.Tag:
+                game_type = game_type.contents[0]
+                
+            dic['game_type'].append(game_type.encode('utf-8'))
             #############################################################
             cell = cells[1]
             foo = cell.find_all('a')
@@ -128,4 +129,4 @@ for my_table in tables:
 
 
 df = pd.DataFrame(dic)
-df.to_csv('meciuri_ro3.csv',index=False)
+df.to_csv('meciuri_ro2.csv',index=False)
