@@ -9,14 +9,11 @@ import pandas as pd
 dic = {}
 dic['date'] = []
 dic['year'] = []
-
 dic['game_type'] = []
 dic['adversar'] = []
 dic['score_ro'] = []
 dic['romania_won'] = []
 dic['romania_lost'] = []
-
-dic['romania'] = []
 dic['score_ad'] = []
 dic['location'] = []
 
@@ -119,7 +116,6 @@ for url in urls:
                 left_team = left_team.rstrip('*')
                 right_team = right_team.rstrip('*')
                 if right_team == 'Romania':
-                    dic['romania'].append(right_team)
                     dic['adversar'].append(left_team)
                     dic['score_ro'].append(right_score)
                     dic['score_ad'].append(left_score) 
@@ -130,7 +126,6 @@ for url in urls:
                     else:
                         state = 0
                 elif left_team == 'Romania':
-                    dic['romania'].append(left_team)
                     dic['adversar'].append(right_team)
                     dic['score_ro'].append(left_score)
                     dic['score_ad'].append(right_score) 
